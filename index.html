@@ -2,42 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Teacher Survey Links</title>
+  <title>Student Engagement Module Links</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 30px; }
-    .link-box { margin-top: 20px; padding: 15px; border: 1px solid #ccc; width: 100%; max-width: 600px; }
-    input { width: 100%; padding: 8px; font-size: 16px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #0056b3;
+    }
+
+    p.description {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    p.window {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .link-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      max-width: 100%;
+      background: #f1f3f5;
+    }
+
+    .link-box input {
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      outline: none;
+      background: transparent;
+    }
+
+    .link-box button {
+      border: none;
+      background: #0056b3;
+      color: white;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .link-box button:hover {
+      background: #004494;
+    }
+
+    .copied-msg {
+      color: green;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Student Engagement Module Links</h1>
+    <p class="description">Use the personalized link below to administer the Student Engagement Module survey to your students.</p>
+    <p class="window">Administration window: First 10 days of school</p>
 
-<h1>Your Qualtrics Survey Link</h1>
-<p>Copy your personalized link below:</p>
+    <div class="link-box">
+      <input type="text" id="survey-link" readonly>
+      <button onclick="copyLink()">📋</button>
+    </div>
+    <div class="copied-msg" id="copied-msg">Link copied!</div>
+  </div>
 
-<div class="link-box">
-  <input type="text" id="survey-link" readonly>
-</div>
+  <script>
+    // Teacher links JSON
+    const teacherLinks = {
+      "001": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=001",
+      "002": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=002",
+      "003": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=003",
+      "004": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=004",
+      "005": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=005"
+    };
 
-<script>
-  // Simulated teacher database
-  const teacherLinks = {
-    "001": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=001",
-    "002": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=002",
-    "003": "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI?TeacherID=003"
-  };
+    // Get teacher ID from URL query string
+    const params = new URLSearchParams(window.location.search);
+    const teacherID = params.get('TeacherID');
 
-  // Get teacher ID from URL query string
-  const params = new URLSearchParams(window.location.search);
-  const teacherID = params.get('TeacherID');
+    // Set survey link
+    const inputBox = document.getElementById('survey-link');
+    const copiedMsg = document.getElementById('copied-msg');
 
-  // Set the survey link
-  const inputBox = document.getElementById('survey-link');
-  if (teacherID && teacherLinks[teacherID]) {
-    inputBox.value = teacherLinks[teacherID];
-  } else {
-    inputBox.value = "Teacher ID not found. Please check your Canvas page link.";
-  }
-</script>
+    if (teacherID && teacherLinks[teacherID]) {
+      inputBox.value = teacherLinks[teacherID];
+    } else {
+      inputBox.value = "Teacher ID not found. Please check your Canvas page link.";
+    }
 
+    // Copy to clipboard function
+    function copyLink() {
+      inputBox.select();
+      inputBox.setSelectionRange(0, 99999); // for mobile devices
+      navigator.clipboard.writeText(inputBox.value).then(() => {
+        copiedMsg.style.display = "block";
+        setTimeout(() => copiedMsg.style.display = "none", 2000);
+      });
+    }
+  </script>
 </body>
 </html>
