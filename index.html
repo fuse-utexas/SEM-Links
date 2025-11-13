@@ -110,23 +110,23 @@
 
     // Teacher links JSON
     const teacherLinks = {
-      "001": baseSurveyLink + "?TeacherID=001",
-      "002": baseSurveyLink + "?TeacherID=002",
-      "003": baseSurveyLink + "?TeacherID=003",
-      "004": baseSurveyLink + "?TeacherID=004",
-      "005": baseSurveyLink + "?TeacherID=005"
+      "001": baseSurveyLink + "?ID=001",
+      "002": baseSurveyLink + "?ID=002",
+      "003": baseSurveyLink + "?ID=003",
+      "004": baseSurveyLink + "?ID=004",
+      "005": baseSurveyLink + "?ID=005"
     };
 
     // Get teacher ID from URL query string
     const params = new URLSearchParams(window.location.search);
-    const teacherID = params.get('TeacherID');
+    const ID = params.get('ID');
 
     const inputBox = document.getElementById('survey-link');
     const copiedMsg = document.getElementById('copied-msg');
 
-    // Set survey link: if teacherID exists, use personalized link; else, use base link
-    if (teacherID && teacherLinks[teacherID]) {
-      inputBox.value = teacherLinks[teacherID];
+    // Set survey link: if ID exists, use personalized link; else, use base link
+    if (ID && teacherLinks[ID]) {
+      inputBox.value = teacherLinks[ID];
     } else {
       inputBox.value = baseSurveyLink;
     }
