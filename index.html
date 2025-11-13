@@ -4,63 +4,67 @@
   <meta charset="UTF-8">
   <title>Student Engagement Module Links</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f8f9fa;
+      background-color: #ffffff;
       color: #333;
       padding: 40px;
       display: flex;
       justify-content: center;
     }
 
-    input, button {
-      font-family: 'Roboto', sans-serif;
-    }
-
     .container {
-      background: #fff;
+      background: #fafafa; /* light grey box for all links */
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       max-width: 600px;
       width: 100%;
     }
 
     h1 {
-      margin-bottom: 40px;
-      color: #0D2848; /* navy blue */
+      margin-bottom: 20px;
+      color: #0D2848;
       text-align: center;
     }
 
     p.description {
       font-size: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       text-align: left;
     }
 
-    p.window {
+    .time-window {
       font-size: 20px;
       font-weight: bold;
-      color: #AC882E; 
-      background-color: #fcf7e1; /* light gold highlight */
-      padding: 5px 10px;
-      margin-bottom: 25px;
-      text-align: left;
+      color: #AC882E; /* dark gold */
+      background-color: #fcf7e1; /* light gold */
+      padding: 8px 8px;
+      margin-bottom: 5px;
       display: inline-block;
-      border-radius: 5px;
+    }
+
+    .link-section {
+      margin-bottom: 20px;
+    }
+
+    .link-label {
+      font-weight: 500;
+            margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     .link-box {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       border: 1px solid #ccc;
       border-radius: 6px;
       overflow: hidden;
-      max-width: 100%;
-      background: #f1f3f5;
+      background: #ffffff;
     }
 
     .link-box input {
@@ -70,26 +74,34 @@
       width: 80%;
       outline: none;
       background: transparent;
+        font-family: 'Lato', sans-serif; /* formal, easy to read */
     }
 
     .link-box button {
-      border: none;
+      border: 2px solid #0D2848;
       background: #0D2848;
       color: white;
       padding: 10px 15px;
+      font-weight: 400;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
+        transition: background 0.2s ease;
+  font-family: 'Lato', sans-serif; /* formal, easy to read */
+
+      
     }
 
     .link-box button:hover {
-      background: #0a1f36;
+      background: #0D2848;
     }
 
     .copied-msg {
       color: green;
-      font-size: 14px;
+      font-size: 15px;
       margin-top: 10px;
       display: none;
+      text-align: center;
     }
   </style>
 </head>
@@ -97,37 +109,63 @@
   <div class="container">
     <h1>Student Engagement Module Links</h1>
     <p class="description">Use the personalized link below to administer the Student Engagement Module to your students.</p>
-    <p class="window">SEM 1: First 10 days of school</p>
 
-    <div class="link-box">
-      <input type="text" id="survey-link" readonly>
-      <button onclick="copyLink()">Copy Link</button>
+<div class="time-window">SEM 1: First 10 Days of School</div>
+
+
+    <!-- Short Link -->
+    <div class="link-section">
+      <div class="link-label">Short link:</div>
+      <div class="link-box">
+        <input type="text" id="short-link" readonly>
+        <button onclick="copyShortLink()">Copy Link</button>
+      </div>
     </div>
+
+    <!-- Long Link -->
+    <div class="link-section">
+      <div class="link-label">Long link (if the short link above doesn't work):</div>
+      <div class="link-box">
+        <input type="text" id="full-link" readonly>
+        <button onclick="copyFullLink()">Copy Link</button>
+      </div>
+    </div>
+
     <div class="copied-msg" id="copied-msg">Link copied!</div>
   </div>
 
   <script>
     const baseSurveyLink = "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI";
+    const shortLinkBase = "https://dub.sh/SEM1";
 
-    // Get ID from URL query string
     const params = new URLSearchParams(window.location.search);
-    const teacherID = params.get('ID'); 
+    const teacherID = params.get('ID');
 
-    const inputBox = document.getElementById('survey-link');
+    const shortBox = document.getElementById('short-link');
+    const fullBox = document.getElementById('full-link');
     const copiedMsg = document.getElementById('copied-msg');
 
-    // Dynamically generate link
+    // Set links
     if (teacherID) {
-      inputBox.value = baseSurveyLink + "?ID=" + teacherID;
+      shortBox.value = shortLinkBase + "?ID=" + teacherID;
+      fullBox.value = baseSurveyLink + "?ID=" + teacherID;
     } else {
-      inputBox.value = baseSurveyLink;
+      shortBox.value = shortLinkBase;
+      fullBox.value = baseSurveyLink;
     }
 
-    // Copy to clipboard function
-    function copyLink() {
-      inputBox.select();
-      inputBox.setSelectionRange(0, 99999); // mobile support
-      navigator.clipboard.writeText(inputBox.value).then(() => {
+    // Copy functions
+    function copyShortLink() {
+      shortBox.select();
+      navigator.clipboard.writeText(shortBox.value).then(() => {
+        copiedMsg.style.display = "block";
+        setTimeout(() => copiedMsg.style.display = "none", 2000);
+      });
+    }
+
+    function copyFullLink() {
+      fullBox.select();
+      navigator.clipboard.writeText(fullBox.value).then(() => {
         copiedMsg.style.display = "block";
         setTimeout(() => copiedMsg.style.display = "none", 2000);
       });
