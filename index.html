@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Student Engagement Module Links</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     body {
@@ -29,7 +29,7 @@
     }
 
     h1 {
-      margin-bottom: 4px;
+      margin-bottom: 40px;
       color: #0D2848; /* navy blue */
       text-align: center;
     }
@@ -40,16 +40,17 @@
       text-align: left;
     }
 
-  p.window {
-  font-size: 20px;
-  font-weight: bold;
-  color: #947527; 
-  background-color: #fcf7e1; /* light gold highlight */
-  padding: 5px 10px; /* some space around the text */
-  margin-bottom: 25px;
-  text-align: left;
-  display: inline-block; /* shrink highlight to fit text */
-}
+    p.window {
+      font-size: 20px;
+      font-weight: bold;
+      color: #AC882E; 
+      background-color: #fcf7e1; /* light gold highlight */
+      padding: 5px 10px;
+      margin-bottom: 25px;
+      text-align: left;
+      display: inline-block;
+      border-radius: 5px;
+    }
 
     .link-box {
       display: flex;
@@ -108,25 +109,16 @@
   <script>
     const baseSurveyLink = "https://utexas.qualtrics.com/jfe/form/SV_08wxh58X7ZvLrJI";
 
-    // Teacher links JSON
-    const teacherLinks = {
-      "001": baseSurveyLink + "?ID=001",
-      "002": baseSurveyLink + "?ID=002",
-      "003": baseSurveyLink + "?ID=003",
-      "004": baseSurveyLink + "?ID=004",
-      "005": baseSurveyLink + "?ID=005"
-    };
-
-    // Get teacher ID from URL query string
+    // Get ID from URL query string
     const params = new URLSearchParams(window.location.search);
-    const ID = params.get('ID');
+    const teacherID = params.get('ID'); // changed from TeacherID
 
     const inputBox = document.getElementById('survey-link');
     const copiedMsg = document.getElementById('copied-msg');
 
-    // Set survey link: if ID exists, use personalized link; else, use base link
-    if (ID && teacherLinks[ID]) {
-      inputBox.value = teacherLinks[ID];
+    // Dynamically generate link
+    if (teacherID) {
+      inputBox.value = baseSurveyLink + "?ID=" + teacherID;
     } else {
       inputBox.value = baseSurveyLink;
     }
